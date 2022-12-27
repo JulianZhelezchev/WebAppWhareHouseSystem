@@ -1,0 +1,144 @@
+﻿
+
+@model List<ProductViewModel>
+
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>All Products</h1>
+
+<p>
+    <a asp-action="Create">Create Product</a>
+</p>
+
+
+
+<form asp-controller="Product" asp-action="Index" method="get">
+    <fieldset style="border:2px groove; border-width:medium ; background-color: red; border-style: dashed solid;">
+        <div style="margin: 15px 15px 15px 15px">
+            <h1 style="background-size:5em; font:italic;font-family:Times New Roman, Times, serif">
+                
+                Search options: 
+            </h1>
+
+            <h2 style="font:italic;font-family:Times New Roman, Times, serif">
+           
+             1) ProductName & Product Category 
+             OR 2) ProductCode
+
+            </h2>
+       
+
+           Search Product Name <input type="text" name="searchName" class="form-control" />
+            <br />
+
+            <div class="form-group">
+                Product Category
+                <select name="searchCategory" class="form-control">
+                    <option style="background-color: DodgerBlue; border-color: transparent transparent black transparent;">*** Select Category ***</option>
+                    <option>All</option>
+                    <option>Groceries</option>
+                    <option>Stationary Items</option>
+                    <option>Building Materials</option>
+                </select>
+            </div>
+
+            Product Code <input type="text" name="searchCode" class="form-control" />
+            <br />
+
+            <div class="text-center">
+                <input type="submit" value="Search" class="btn btn-info text-center" />
+            </div>
+            <div class="text-center">
+                <a asp-action="Index" >Refresh</a>
+            </div>
+        </div>
+    </fieldset>
+</form>
+<br />
+
+@if (ViewBag.MissingProduct != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @ViewBag.MissingProduct
+    </div>
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Product Name
+            </th>
+            <th>
+                Description
+            </th>
+            <th>
+                Image Path
+            </th>
+            <th>
+                Buy Price
+            </th>
+            <th>
+                Sell Price
+            </th>
+            <th>
+                Quantity
+            </th>
+            <th>
+                Category
+            </th>
+            <th>
+               Product Code
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.Name
+                </td>
+                <td>
+                    @item.Description
+                </td>
+                @if (item.ImagePath == null)
+                {
+                    <td>There is no available photo for this product!</td>
+                }
+                else
+                {
+                    <td>
+                        <img src="@item.ImagePath" class="img-thumbnail" />
+                    </td>
+                }
+                <td>
+                    @item.BuyPrice
+                </td>
+                <td>
+                    @item.SellPrice
+                </td>
+                <td>
+                    @item.Quantity
+                </td>
+                <td>
+                    @item.Category
+                </td>
+                <td>
+                    @item.ProductCode
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
