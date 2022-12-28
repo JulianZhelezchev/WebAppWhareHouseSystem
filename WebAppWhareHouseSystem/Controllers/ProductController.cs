@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading.Tasks;
@@ -14,8 +15,8 @@ namespace WebAppWhareHouseSystem.Controllers
         public ProductController(IProductServices productServices)
         {
             _productServices = productServices;
-        }
 
+        }
 
         // GET: Products
         public async Task<IActionResult> Index()
@@ -41,13 +42,20 @@ namespace WebAppWhareHouseSystem.Controllers
             return View(products);
         }
 
-        // GET: Products/Create
-       
+        // GET: Products/Create  ????????
+        public async Task<IActionResult> Create()
+        {
 
-        // POST: Products/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+            return View();
+
+
+        }
+
+
+            // POST: Products/Create
+            // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+            // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+            [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ProductViewModel product)
         {
@@ -58,11 +66,11 @@ namespace WebAppWhareHouseSystem.Controllers
                 await _productServices.CreateAsync(product);
                 return RedirectToAction(nameof(Index));
             }
-          
+
             return View(product);
         }
 
-        // GET: Products/Edit/5
+   /*    // GET: Products/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -70,14 +78,11 @@ namespace WebAppWhareHouseSystem.Controllers
                 return NotFound();
             }
 
-            var product = await _productServices.GetByIdAsync(id.Value);
-            if (product == null)
-            {
-                return NotFound();
-            }
-         
-            return View(product);
+
+
         }
+
+        */
 
         // POST: Products/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
@@ -110,7 +115,7 @@ namespace WebAppWhareHouseSystem.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-           
+
             return View(product);
         }
 
@@ -139,58 +144,64 @@ namespace WebAppWhareHouseSystem.Controllers
             await _productServices.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
         }
-    }
-
-    /*public ProductController(IProductServices productServices)
-    {
-        _productServices = productServices;
-    }
 
 
-    public IActionResult Index()
-    {
-        try
+        /*   public ProductController(IProductServices productServices)
+           {
+               _productServices = productServices;
+           }
+
+
+           public IActionResult Index()
+           {
+               try
+               {
+                   var allProducts = _productServices.GetAllProducts();
+                   return View(allProducts);
+               }
+               catch (Exception ex)
+               {
+                   return RedirectToAction("Index", new { Message = ex.Message });
+               }
+
+
+           }
+        
+        [HttpGet]
+        public IActionResult Create()
         {
-            var allProducts = _productServices.GetAllProducts();
-            return View(allProducts);
+            var product = new ProductViewModel();
+            return View(product);
         }
-        catch (Exception ex)
+
+        [HttpPost]
+        public IActionResult Create(ProductViewModel productViewModel)
         {
-            return RedirectToAction("Index", new { Message = ex.Message });
-        }
-
-
-    }
-
-    [HttpGet]
-    public IActionResult AddProduct()
-    {
-        var product = new ProductViewModel();
-        return View(product);
-    }
-
-    [HttpPost]
-    public IActionResult AddProduct(ProductViewModel productViewModel)
-    {
-        try
-        {
-            if (!ModelState.IsValid)
+            try
             {
-                return View(productViewModel);
+                if (!ModelState.IsValid)
+                {
+                    return View(productViewModel);
+                }
+
+                _productServices.Create(productViewModel);
+                return RedirectToAction("Index");
+
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Index", new { Message = ex.Message });
             }
 
-            _productServices.AddProduct(productViewModel);
-            return RedirectToAction("Index");
+        
 
-        }
-        catch (Exception ex)
-        {
-            return RedirectToAction("Index", new { Message = ex.Message });
-        }
+    
+   
 
-    }*/
-
+         */
+    }
 }
+
 
 
 
